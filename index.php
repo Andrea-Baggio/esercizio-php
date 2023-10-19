@@ -1,62 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aziende</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-  </head>
-  
-  <body class="dark-mode">
-    
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand navbar-light">
-      <h1 class="text-black">Aziende</h1>
-      <!-- Left navbar links -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="create.php" class="nav-link">Create</a>
-        </li>
-      </ul>
-    </nav><!-- /.navbar -->
-      
-    <main>
-      <div>
-        <!-- index dei record -->
-        <?php
+    <?php
+        include './layout/navbar.php';
+    ?>
 
-          include 'setting.php';
+    <div class="wrapper">
+        <div class="iframe-mode" data-widget="iframe" data-loading-screen="750">
+            <div class="tab-content">
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $editButton = "<a href='edit.php'><button type='button' class='btn btn-block bg-gradient-primary'>Edit</button></a>";
+                                $deletebutton = "<a href='delete.php'><button type='button' class='btn btn-block bg-gradient-danger'>Delete</button></a>";
 
-          try {
-            $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-            echo "<script>console.log('Connected successfully.');</script>";
-          } 
-          catch (PDOException $pe) {
-              die("Could not connect to the database $dbname :" . $pe->getMessage());
-          }
+                                $sql = 'SELECT * FROM companies';
+                                $query = $conn->query($sql); 
+                                foreach ($conn->query($sql) as $row) {
+                                    echo "<tr>";
+                                        echo "<td>" . $row['name'] ."</td>";
+                                        echo "<td>" . $row['email'] ."</td>";
+                                        echo "<td>" . $row['address'] . "</td>";
+                                        echo "<td>" . $editButton . $deletebutton . "</td>";
+                                        echo "<td><a href='#' class='text-muted'><i class='fas fa-search'></i></a></td>";
+                                    echo "</tr>";
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-          $sql = 'SELECT * FROM companies';
-          $query = $conn->query($sql);
+    <?php
+        $conn = null;
+    ?>
 
-          if ($query->rowCount() > 0) {
-              $sql = "SELECT * FROM `companies`;";
-              foreach ($conn->query($sql) as $row) {
-                  echo $row['name'] . '<br>';
-              }
-            }
-          $conn = null;
-        ?>
-      </div>
-    </main>
-
-
-
+    <!-- adminlte js -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js" integrity="sha512-ubuT8Z88WxezgSqf3RLuNi5lmjstiJcyezx34yIU2gAHonIi27Na7atqzUZCOoY4CExaoFumzOsFQ2Ch+I/HCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  </body>
+    <!-- bootstrap 4.6 js -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    <!-- datatables js -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+</body>
+
 </html>
